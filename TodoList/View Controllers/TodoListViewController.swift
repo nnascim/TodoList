@@ -9,8 +9,8 @@ class TodoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.register(UITableViewCell.self,
-                           forCellReuseIdentifier: "reuseIdentifier")
+        tableView.register(cellType: ItemTableViewCell.self)
+        title = "To Do List"
     }
 
     // MARK: - Table view data source
@@ -20,11 +20,10 @@ class TodoListViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell: ItemTableViewCell = tableView.dequeueReusableCell(for: indexPath)
 
         let todo = todos[indexPath.row]
-        cell.textLabel?.text = todo.title
-        cell.textLabel?.textColor = todo.isComplete ? .gray : .black
+        cell.set(text: todo.title, isCompleted: todo.isComplete)
 
         return cell
     }
@@ -47,6 +46,7 @@ class TodoListViewController: UITableViewController {
         
         // toggle item completion state
         todos[indexPath.row].isComplete = !todos[indexPath.row].isComplete
+        
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 
