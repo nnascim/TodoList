@@ -11,6 +11,7 @@
 		D34152432138AA9D0009D874 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D34152422138AA9D0009D874 /* Assets.xcassets */; };
 		D34152462138AA9D0009D874 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D34152442138AA9D0009D874 /* LaunchScreen.storyboard */; };
 		D341524E2138B1090009D874 /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341524D2138B1090009D874 /* TodoListViewController.swift */; };
+		D34152502138B61C0009D874 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341524F2138B61C0009D874 /* Item.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		D34152452138AA9D0009D874 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D34152472138AA9D0009D874 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D341524D2138B1090009D874 /* TodoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewController.swift; sourceTree = "<group>"; };
+		D341524F2138B61C0009D874 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 			children = (
 				D341523B2138AA9C0009D874 /* AppDelegate.swift */,
 				D341524D2138B1090009D874 /* TodoListViewController.swift */,
+				D341524F2138B61C0009D874 /* Item.swift */,
 				D34152422138AA9D0009D874 /* Assets.xcassets */,
 				D34152442138AA9D0009D874 /* LaunchScreen.storyboard */,
 				D34152472138AA9D0009D874 /* Info.plist */,
@@ -132,6 +135,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D341524E2138B1090009D874 /* TodoListViewController.swift in Sources */,
+				D34152502138B61C0009D874 /* Item.swift in Sources */,
 				D341523C2138AA9C0009D874 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
