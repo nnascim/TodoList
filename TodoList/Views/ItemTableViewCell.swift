@@ -2,16 +2,22 @@ import UIKit
 
 class ItemTableViewCell: UITableViewCell {
     
-    @IBOutlet private weak var label: UILabel!
+    @IBOutlet private weak var label: UILabel! {
+        didSet {
+            label.numberOfLines = 0
+            label.font = UIFont.preferredFont(forTextStyle: .headline)
+            label.adjustsFontForContentSizeCategory = true
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        label.numberOfLines = 0
-        label.font = UIFont.preferredFont(forTextStyle: .callout)
-        label.adjustsFontForContentSizeCategory = true
+
+        setupUI()
+    }
+    
+    private func setupUI() {
         label.translatesAutoresizingMaskIntoConstraints = false
-        
         let heightConstraint = label.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
         heightConstraint.priority = .defaultHigh
         heightConstraint.isActive = true
@@ -21,14 +27,20 @@ class ItemTableViewCell: UITableViewCell {
     
     func set(text: String, isCompleted: Bool) {
         
-        accessoryType = isCompleted ? .checkmark : .none
+        backgroundColor = isCompleted ? UIColor.white.withAlphaComponent(0.3) : .white
+        
+        label.attributedText = NSAttributedString(string: text,
+                                                  attributes: attributes(isCompleted: isCompleted))
+    }
+    
+    private func attributes(isCompleted: Bool) -> [NSAttributedStringKey: Any] {
         
         if isCompleted {
-            label.attributedText = NSAttributedString(string: text, attributes: [.strikethroughStyle: 1])
-        } else {
-            label.attributedText = nil
-            label.text = text
+            let bodyFont = UIFont.preferredFont(forTextStyle: .body)
+            return [.strikethroughStyle: 1, .font: bodyFont, .foregroundColor: UIColor.lightGray]
         }
+        
+        return [.font: label.font, .foregroundColor: UIColor.black]
     }
     
     override func prepareForReuse() {
