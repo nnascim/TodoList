@@ -3,9 +3,9 @@ import UIKit
 class TodoListViewController: UITableViewController {
 
     // MARK: - Properties
-    var todos = [Item(title: "Milk"),
-                 Item(title: "Juice"),
-                 Item(title: "Bread", isComplete: true)]
+    private lazy var todos: Todos = {
+        return Todos.load()
+    }()
     
     private lazy var footer: TextFieldView = {
         let footer = TextFieldView.nibView
@@ -36,14 +36,14 @@ class TodoListViewController: UITableViewController {
 
     // MARK: - TableView dataSource Delegate
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return todos.count
+        return todos.items.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ItemTableViewCell = tableView.dequeueReusableCell(for: indexPath)
 
-        let todo = todos[indexPath.row]
-        cell.set(text: todo.title, isCompleted: todo.isComplete)
+        let item = todos.items[indexPath.row]
+        cell.set(text: item.title, isCompleted: item.isComplete)
 
         return cell
     }
@@ -55,7 +55,7 @@ class TodoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
-            todos.remove(at: indexPath.row)
+            todos.items.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
@@ -63,7 +63,7 @@ class TodoListViewController: UITableViewController {
     // MARK: - TableView Delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Toggle item completion state
-        todos[indexPath.row].isComplete = !todos[indexPath.row].isComplete
+        todos.items[indexPath.row].isComplete = !todos.items[indexPath.row].isComplete
         
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
@@ -74,8 +74,8 @@ class TodoListViewController: UITableViewController {
 extension TodoListViewController: TextFieldViewDelegate {
     func textField(didEnter text: String) {
         let item = Item(title: text)
-        todos.append(item)
-        let newIndex = IndexPath(row: todos.count-1, section: 0)
+        todos.items.append(item)
+        let newIndex = IndexPath(row: todos.items.count-1, section: 0)
         tableView.beginUpdates()
         tableView.insertRows(at: [newIndex], with: .automatic)
         tableView.endUpdates()
