@@ -1,12 +1,12 @@
 import Foundation
 
-struct Todo: Codable {
-    var list: [Item] {
+struct Todos: Codable {
+    var items: [Item] {
         didSet { self.save() }
     }
 
     init(items: [Item]) {
-      self.list = items
+      self.items = items
     }
 }
 
@@ -19,23 +19,20 @@ struct Item: Codable {
         self.isComplete = isComplete
     }
 }
-//NOTE: UserDefaults is a temporary sulution
-extension Todo {
+//NOTE: UserDefaults is a temporary solution
+extension Todos {
     func save() {
         if let encoded = try? JSONEncoder().encode(self) {
             UserDefaults.standard.set(encoded, forKey: "todoList")
         }
     }
 
-    static func load() -> Todo {
+    static func load() -> Todos {
         if let savedItems = UserDefaults.standard.object(forKey: "todoList") as? Data {
-            if let loadedItems = try? JSONDecoder().decode(Todo.self, from:savedItems) {
+            if let loadedItems = try? JSONDecoder().decode(Todos.self, from:savedItems) {
                 return loadedItems
             }
         }
-        return Todo(items:
-                     [Item(title: "Milk"),
-                     Item(title: "Juice"),
-                     Item(title: "Bread", isComplete: true)])
+        return Todos(items: [])
     }
 }
