@@ -6,7 +6,7 @@ extension NSObject {
         return String(describing: type(of: self))
     }
     
-    class var className: String {
+    static var className: String {
         return String(describing: self)
     }
 }
