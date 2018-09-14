@@ -1,4 +1,6 @@
-struct Item {
+import Foundation
+
+struct Item: Codable {
     let title: String
     var isComplete: Bool
     
