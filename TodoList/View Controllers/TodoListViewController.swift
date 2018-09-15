@@ -12,8 +12,13 @@ class TodoListViewController: UITableViewController {
         footer.delegate = self
         return footer
     }()
-
     
+    private lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        return formatter
+    }()
+
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,10 +31,7 @@ class TodoListViewController: UITableViewController {
         
         tableView.register(cellType: ItemTableViewCell.self)
         tableView.tableFooterView = footer
-        tableView.estimatedRowHeight = 44
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedSectionFooterHeight = 80
-        tableView.sectionFooterHeight = UITableViewAutomaticDimension
+        tableView.keyboardDismissMode = .interactive
         
         title = NSLocalizedString("My List", comment: "")
     }
@@ -43,7 +45,14 @@ class TodoListViewController: UITableViewController {
         let cell: ItemTableViewCell = tableView.dequeueReusableCell(for: indexPath)
 
         let item = todos.items[indexPath.row]
-        cell.set(text: item.title, isCompleted: item.isComplete)
+        var date: String?
+        if let completionDate = item.completionDate {
+            date = dateFormatter.string(from: completionDate)
+        }
+        
+        cell.set(title: item.title,
+                 subtitle: date,
+                 isCompleted: item.isComplete)
 
         return cell
     }
@@ -65,11 +74,11 @@ class TodoListViewController: UITableViewController {
         // Toggle item completion state
         var item = todos.items[indexPath.row]
         item.isComplete = !item.isComplete
+        item.completionDate = item.isComplete ? Date() : nil
         todos.items[indexPath.row] = item
         
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
-
 }
 
 // MARK: - TextFieldViewDelegate Extension
