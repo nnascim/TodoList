@@ -13,6 +13,14 @@ class TodoListViewController: UITableViewController {
         return footer
     }()
 
+    private lazy var editBarButtonItem: UIBarButtonItem = {
+        let item = UIBarButtonItem(title: nil,
+                                   style: .plain,
+                                   target: self,
+                                   action: #selector(didTapEditBarButtonItem(_:)))
+        return item
+    }()
+
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -23,7 +31,10 @@ class TodoListViewController: UITableViewController {
     
     // MARK: - Helpers
     private func setupUI() {
-        
+
+        navigationItem.rightBarButtonItem = editBarButtonItem
+        switchTableViewIsEditing(to: false)
+
         tableView.register(cellType: ItemTableViewCell.self)
         tableView.tableFooterView = footer
         tableView.estimatedRowHeight = 44
@@ -59,6 +70,17 @@ class TodoListViewController: UITableViewController {
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
+
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    override func tableView(_ tableView: UITableView,
+        moveRowAt sourceIndexPath: IndexPath,
+        to destinationIndexPath: IndexPath) {
+            todos.items.swapAt(sourceIndexPath.row, destinationIndexPath.row)
+            todos.save()
+    }
     
     // MARK: - TableView Delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -81,5 +103,24 @@ extension TodoListViewController: TextFieldViewDelegate {
         tableView.beginUpdates()
         tableView.insertRows(at: [newIndex], with: .automatic)
         tableView.endUpdates()
+    }
+}
+
+// MARK: - User interaction
+extension TodoListViewController {
+    @objc func didTapEditBarButtonItem(_ item: UIBarButtonItem) {
+        switchTableViewIsEditing(to: !tableView.isEditing)
+    }
+
+    func switchTableViewIsEditing(to isEditing: Bool) {
+        tableView.isEditing = isEditing
+
+        var newTitle: String?
+        if isEditing {
+            newTitle = NSLocalizedString("Cancel", comment: "")
+        } else {
+            newTitle = NSLocalizedString("Edit", comment: "")
+        }
+        editBarButtonItem.title = newTitle
     }
 }
