@@ -1,6 +1,6 @@
 import UIKit
 
-class ItemTableViewCell: UITableViewCell {
+final class ItemTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     @IBOutlet private var stackView: UIStackView!

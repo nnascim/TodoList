@@ -4,8 +4,7 @@ protocol TextFieldViewDelegate: class {
     func textField(didEnter text: String)
 }
 
-
-class TextFieldView: UIView {
+final class TextFieldView: UIView {
     
     static let nibView: TextFieldView = buildNib()
     
@@ -14,7 +13,10 @@ class TextFieldView: UIView {
             textField.delegate = self
             textField.font = UIFont.preferredFont(forTextStyle: .callout)
             textField.adjustsFontForContentSizeCategory = true
-            textField.placeholder = NSLocalizedString("+ Add New Item", comment: "")
+            let placeholder = NSAttributedString(string: NSLocalizedString("+ Add New Item", comment: ""),
+                                                 attributes: [.foregroundColor: UIColor.gray,
+                                                              .font: UIFont.preferredFont(forTextStyle: .callout)])
+            textField.attributedPlaceholder = placeholder
             
             textField.layer.cornerRadius = 16
             textField.layer.masksToBounds = true
