@@ -12,7 +12,6 @@ class TodoListViewController: UITableViewController {
         footer.delegate = self
         return footer
     }()
-
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -23,7 +22,9 @@ class TodoListViewController: UITableViewController {
     
     // MARK: - Helpers
     private func setupUI() {
-        
+
+        navigationItem.rightBarButtonItem = editButtonItem
+
         tableView.register(cellType: ItemTableViewCell.self)
         tableView.tableFooterView = footer
         tableView.estimatedRowHeight = 44
@@ -58,6 +59,17 @@ class TodoListViewController: UITableViewController {
             todos.items.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
+    }
+
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    override func tableView(_ tableView: UITableView,
+        moveRowAt sourceIndexPath: IndexPath,
+        to destinationIndexPath: IndexPath) {
+            todos.items.swapAt(sourceIndexPath.row, destinationIndexPath.row)
+            todos.save()
     }
     
     // MARK: - TableView Delegate
