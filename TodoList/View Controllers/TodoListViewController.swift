@@ -75,10 +75,7 @@ class TodoListViewController: UITableViewController {
     // MARK: - TableView Delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Toggle item completion state
-        var item = todos.items[indexPath.row]
-        item.isComplete = !item.isComplete
-        todos.items[indexPath.row] = item
-        
+        todos.items[indexPath.row].isComplete.toggle()
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 
