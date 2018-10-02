@@ -28,7 +28,9 @@ class TodoListViewController: UITableViewController {
     
     // MARK: - Helpers
     private func setupUI() {
-        
+
+        navigationItem.rightBarButtonItem = editButtonItem
+
         tableView.register(cellType: ItemTableViewCell.self)
         tableView.tableFooterView = footer
         tableView.keyboardDismissMode = .interactive
@@ -68,15 +70,26 @@ class TodoListViewController: UITableViewController {
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
+
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    override func tableView(_ tableView: UITableView,
+        moveRowAt sourceIndexPath: IndexPath,
+        to destinationIndexPath: IndexPath) {
+            todos.items.swapAt(sourceIndexPath.row, destinationIndexPath.row)
+            todos.save()
+    }
     
     // MARK: - TableView Delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Toggle item completion state
         var item = todos.items[indexPath.row]
-        item.isComplete = !item.isComplete
+        item.isComplete.toggle()
         item.completionDate = item.isComplete ? Date() : nil
         todos.items[indexPath.row] = item
-        
+
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }
