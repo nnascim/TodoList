@@ -60,35 +60,37 @@ final class TodoTableViewController: UITableViewController {
     
     // MARK: - Helpers
     private func setupUI() {
-        
         tableView.register(cellType: ItemTableViewCell.self)
         tableView.keyboardDismissMode = .interactive
     }
     
     private func setState(isEmpty: Bool) {
-        tableView.backgroundView = isEmpty ? emptyView : nil
+        UIView.animate(withDuration: 0.3) {
+            self.tableView.backgroundView = isEmpty ? self.emptyView : nil
+        }
+    }
+    
+    private func completedDate(from item: Item) -> String? {
+    
+        if let completionDate = item.completionDate {
+            return dateFormatter.string(from: completionDate)
+        }
+        return nil
     }
     
     // MARK: - TableView dataSource Delegate
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        UIView.animate(withDuration: 0.3) {
-            self.setState(isEmpty: self.dataSource.isEmpty)
-        }
-        
+        setState(isEmpty: self.dataSource.isEmpty)
         return dataSource.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: ItemTableViewCell = tableView.dequeueReusableCell(for: indexPath)
         
+        let cell: ItemTableViewCell = tableView.dequeueReusableCell(for: indexPath)
         let item = dataSource[indexPath.row]
-        var date: String?
-        if let completionDate = item.completionDate {
-            date = dateFormatter.string(from: completionDate)
-        }
         
         cell.set(title: item.title,
-                 subtitle: date,
+                 subtitle: completedDate(from: item),
                  isCompleted: item.isComplete)
         
         return cell

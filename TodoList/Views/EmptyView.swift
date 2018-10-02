@@ -9,11 +9,13 @@ final class EmptyView: UIView {
             label.text = NSLocalizedString("It's all a big black nothing", comment: "")
             label.font = UIFont.preferredFont(forTextStyle: .largeTitle)
             label.textColor = .black
+            label.numberOfLines = 0
+            label.adjustsFontForContentSizeCategory = true
+            label.textAlignment = .center
         }
     }
     
     @IBOutlet var iconImage: UIImageView!
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()
