@@ -4,7 +4,12 @@ class ItemTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     @IBOutlet private var stackView: UIStackView!
-    @IBOutlet private var stateImage: UIImageView!
+    @IBOutlet private var stateImage: UIImageView! {
+        didSet {
+            stateImage.adjustsImageSizeForAccessibilityContentSizeCategory = true
+        }
+    }
+    
     @IBOutlet private var titleLabel: UILabel! {
         didSet {
             titleLabel.numberOfLines = 0
@@ -70,8 +75,6 @@ class ItemTableViewCell: UITableViewCell {
         let heightConstraint = stackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
         heightConstraint.priority = .defaultHigh
         heightConstraint.isActive = true
-        
-        selectionStyle = .none
     }
     
     private func titleAttributes(isCompleted: Bool) -> [NSAttributedStringKey: Any] {
