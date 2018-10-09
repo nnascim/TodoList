@@ -13,6 +13,7 @@
 		2C677E78213DDE6A00BEAF40 /* UITableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C677E75213DDE6A00BEAF40 /* UITableViewExtensions.swift */; };
 		2C677E7A213DE3DB00BEAF40 /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C677E79213DE3DB00BEAF40 /* TextFieldView.swift */; };
 		2C677E7C213DE3E600BEAF40 /* TextFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C677E7B213DE3E600BEAF40 /* TextFieldView.xib */; };
+		9043DC90216D054E00A6A382 /* DictionaryCoders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9043DC8F216D054E00A6A382 /* DictionaryCoders.swift */; };
 		A5142CCC2144ABDD002150BB /* NSObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5142CCB2144ABDD002150BB /* NSObjectExtensions.swift */; };
 		A7E81039214B133D00E16B45 /* Todos.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E81038214B133D00E16B45 /* Todos.swift */; };
 		D341523C2138AA9C0009D874 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341523B2138AA9C0009D874 /* AppDelegate.swift */; };
@@ -29,6 +30,7 @@
 		2C677E75213DDE6A00BEAF40 /* UITableViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewExtensions.swift; sourceTree = "<group>"; };
 		2C677E79213DE3DB00BEAF40 /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
 		2C677E7B213DE3E600BEAF40 /* TextFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldView.xib; sourceTree = "<group>"; };
+		9043DC8F216D054E00A6A382 /* DictionaryCoders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryCoders.swift; sourceTree = "<group>"; };
 		A5142CCB2144ABDD002150BB /* NSObjectExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObjectExtensions.swift; sourceTree = "<group>"; };
 		A7E81038214B133D00E16B45 /* Todos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todos.swift; sourceTree = "<group>"; };
 		D34152382138AA9C0009D874 /* TodoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,6 +58,7 @@
 			children = (
 				D341524F2138B61C0009D874 /* Item.swift */,
 				A7E81038214B133D00E16B45 /* Todos.swift */,
+				9043DC8F216D054E00A6A382 /* DictionaryCoders.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -201,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C677E78213DDE6A00BEAF40 /* UITableViewExtensions.swift in Sources */,
+				9043DC90216D054E00A6A382 /* DictionaryCoders.swift in Sources */,
 				2C677E7A213DE3DB00BEAF40 /* TextFieldView.swift in Sources */,
 				2C677E70213DDE1300BEAF40 /* ItemTableViewCell.swift in Sources */,
 				A5142CCC2144ABDD002150BB /* NSObjectExtensions.swift in Sources */,
