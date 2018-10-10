@@ -18,10 +18,19 @@ class ContextStorage {
     private let decoder = JSONDecoder()
 
     var phoneContext: IOSContext? {
-        didSet { UserDefaults.standard.set(encodable: phoneContext, forKey: ContextStorage.phoneContextKey) }
+        didSet {
+            UserDefaults.standard.set(encodable: phoneContext,
+                                      forKey: ContextStorage.phoneContextKey,
+                                      using: encoder)
+        }
     }
     var watchContext: WatchContext? {
-        didSet { UserDefaults.standard.set(encodable: watchContext, forKey: ContextStorage.watchContextKey) }
+        didSet {
+            UserDefaults.standard.set(encodable: watchContext,
+                                      forKey: ContextStorage.watchContextKey,
+                                      using: encoder)
+
+        }
     }
 
     init() {
