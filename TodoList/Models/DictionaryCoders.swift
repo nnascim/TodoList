@@ -21,7 +21,7 @@ open class DictionaryEncoder {
     }
 }
 
-/// Decoder for decoding value of Decdable type from dictionary or array
+/// Decoder for decoding value of Decodable type from dictionary or array
 open class DictionaryDecoder {
     private let jsonDecoder = JSONDecoder()
 
