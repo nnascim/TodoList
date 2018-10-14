@@ -23,7 +23,7 @@ extension UserDefaults {
     }
 
     /// Loads data under given key and decodes them using JSONDecoder
-    public func value<T: Decodable>(
+    public func decodedValue<T: Decodable>(
         forKey key: String,
         using decoder: JSONDecoder = JSONDecoder()) -> T?
     {

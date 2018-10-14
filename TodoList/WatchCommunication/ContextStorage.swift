@@ -34,7 +34,7 @@ class ContextStorage {
     }
 
     init() {
-        phoneContext = UserDefaults.standard.value(forKey: ContextStorage.phoneContextKey)
-        watchContext = UserDefaults.standard.value(forKey: ContextStorage.watchContextKey)
+        phoneContext = UserDefaults.standard.decodedValue(forKey: ContextStorage.phoneContextKey)
+        watchContext = UserDefaults.standard.decodedValue(forKey: ContextStorage.watchContextKey)
     }
 }
