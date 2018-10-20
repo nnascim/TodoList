@@ -27,21 +27,7 @@ class Item: CKNamed {
 
 // MARK: - Serialization
 extension Item: Serializable {
-    func serialize() {
-        CloudKitService.init().save(record: buildRecord(), success: { (record) in
-            self.record = record
-        }, failure: {(error) in
-            print(error)
-        })
-    }
 
-    func buildRecord() -> CKRecord {
-        let record = self.record == nil ? CloudKitService.init().blankRecord(type: self) : self.record!
-        recordName              = record.recordID.recordName
-        record["isComplete"]    = isComplete ? 0 : 1
-        record["title"]         = title
-        return record
-    }
 }
 
 // MARK: - Codable
