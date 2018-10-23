@@ -3,6 +3,7 @@ import UIKit
 protocol TodoTableDelegate: class {
     func didDeleteItem(at index: Int)
     func didSelect(at index: Int)
+    func didMoveRow(sourceIndex: Int, destinationIndex: Int)
 }
 
 final class TodoTableViewController: UITableViewController {
@@ -58,13 +59,18 @@ final class TodoTableViewController: UITableViewController {
         tableView.endUpdates()
     }
     
+    func resetDataSource(with items: [Item]) {
+        dataSource = items
+        view.layoutIfNeeded()
+    }
+    
     // MARK: - Helpers
     private func setupUI() {
         tableView.register(cellType: ItemTableViewCell.self)
         tableView.keyboardDismissMode = .interactive
     }
     
-    private func setState(isEmpty: Bool) {
+    private func setDataSourceState(isEmpty: Bool) {
         UIView.animate(withDuration: 0.3) {
             self.tableView.backgroundView = isEmpty ? self.emptyView : nil
         }
@@ -80,7 +86,7 @@ final class TodoTableViewController: UITableViewController {
     
     // MARK: - TableView dataSource Delegate
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        setState(isEmpty: self.dataSource.isEmpty)
+        setDataSourceState(isEmpty: self.dataSource.isEmpty)
         return dataSource.count
     }
     
@@ -107,8 +113,17 @@ final class TodoTableViewController: UITableViewController {
         }
     }
     
-    // MARK: - TableView Delegate
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        
+        delegate?.didMoveRow(sourceIndex: sourceIndexPath.row, destinationIndex: destinationIndexPath.row)
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         delegate?.didSelect(at: indexPath.row)
     }
 }

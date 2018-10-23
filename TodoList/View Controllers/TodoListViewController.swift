@@ -38,9 +38,11 @@ final class TodoListViewController: UIViewController {
     deinit {
         unsubscribeKeyboardEvents()
     }
-    
+
     // MARK: - Helpers
     private func setupUI() {
+
+        navigationItem.rightBarButtonItem = editButtonItem
         title = NSLocalizedString("My List", comment: "")
         
         view.addConstraints([
@@ -48,12 +50,18 @@ final class TodoListViewController: UIViewController {
             footer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             footer.heightAnchor.constraint(greaterThanOrEqualToConstant: 64),
             footerBottomConstraint,
-            
+
             tableViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableViewController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableViewController.view.bottomAnchor.constraint(equalTo: footer.topAnchor)
             ])
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+
+        tableViewController.setEditing(editing, animated: animated)
     }
     
     // MARK: - Keyboard
@@ -109,20 +117,32 @@ final class TodoListViewController: UIViewController {
 
 // MARK: - TodoTableDelegate
 extension TodoListViewController: TodoTableDelegate {
+    
     func didSelect(at index: Int) {
         // Toggle item completion state
         var item = todos.items[index]
         item.isComplete = !item.isComplete
         item.completionDate = item.isComplete ? Date() : nil
         todos.items[index] = item
+        todos.save()
         
         tableViewController.reload(item: item, at: index)
     }
     
     func didDeleteItem(at index: Int) {
         todos.items.remove(at: index)
+        todos.save()
         
         tableViewController.deleteItem(at: index)
+    }
+    
+    func didMoveRow(sourceIndex: Int, destinationIndex: Int) {
+        let item = todos.items[sourceIndex]
+        todos.items.remove(at: sourceIndex)
+        todos.items.insert(item, at: destinationIndex)
+        todos.save()
+        
+        tableViewController.resetDataSource(with: todos.items)
     }
 }
 
