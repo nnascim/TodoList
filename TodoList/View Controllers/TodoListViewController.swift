@@ -1,16 +1,30 @@
 import UIKit
 
-class TodoListViewController: UITableViewController {
+final class TodoListViewController: UIViewController {
 
     // MARK: - Properties
     private lazy var todos: Todos = {
         return Todos.load()
     }()
     
+    private lazy var tableViewController: TodoTableViewController = {
+        let tableViewController = TodoTableViewController(dataSource: todos.items)
+        tableViewController.delegate = self
+        add(tableViewController)
+        return tableViewController
+    }()
+    
     private lazy var footer: TextFieldView = {
         let footer = TextFieldView.nibView
         footer.delegate = self
+        footer.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(footer)
         return footer
+    }()
+    
+    private lazy var footerBottomConstraint: NSLayoutConstraint = {
+        let footBottomConstraint = footer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        return footBottomConstraint
     }()
     
     // MARK: - Life Cycle
@@ -18,67 +32,118 @@ class TodoListViewController: UITableViewController {
         super.viewDidLoad()
 
         setupUI()
+        subscribeToKeyboardEvents()
     }
     
+    deinit {
+        unsubscribeKeyboardEvents()
+    }
+
     // MARK: - Helpers
     private func setupUI() {
 
         navigationItem.rightBarButtonItem = editButtonItem
-
-        tableView.register(cellType: ItemTableViewCell.self)
-        tableView.tableFooterView = footer
-        tableView.estimatedRowHeight = 44
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedSectionFooterHeight = 80
-        tableView.sectionFooterHeight = UITableViewAutomaticDimension
-        
         title = NSLocalizedString("My List", comment: "")
-    }
-
-    // MARK: - TableView dataSource Delegate
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return todos.items.count
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: ItemTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-
-        let item = todos.items[indexPath.row]
-        cell.set(text: item.title, isCompleted: item.isComplete)
-
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
-        if editingStyle == .delete {
-            todos.items.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-        }
-    }
+        view.addConstraints([
+            footer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            footer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            footer.heightAnchor.constraint(greaterThanOrEqualToConstant: 64),
+            footerBottomConstraint,
 
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-
-    override func tableView(_ tableView: UITableView,
-        moveRowAt sourceIndexPath: IndexPath,
-        to destinationIndexPath: IndexPath) {
-            todos.items.swapAt(sourceIndexPath.row, destinationIndexPath.row)
-            todos.save()
+            tableViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableViewController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableViewController.view.bottomAnchor.constraint(equalTo: footer.topAnchor)
+            ])
     }
     
-    // MARK: - TableView Delegate
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Toggle item completion state
-        todos.items[indexPath.row].isComplete.toggle()
-        tableView.reloadRows(at: [indexPath], with: .automatic)
-    }
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
 
+        tableViewController.setEditing(editing, animated: animated)
+    }
+    
+    // MARK: - Keyboard
+    private func subscribeToKeyboardEvents() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    private func unsubscribeKeyboardEvents() {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+       keyboardWill(show: true, keyboardNotification: notification)
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+       keyboardWill(show: false, keyboardNotification: notification)
+    }
+    
+    func keyboardWill(show isShow: Bool, keyboardNotification notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        
+        var animationDuration: TimeInterval = 0
+        if let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber {
+            animationDuration = duration.doubleValue
+        }
+        
+        var keyboardEndFrame = CGRect.zero
+        if let frameEnd = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+            keyboardEndFrame = frameEnd.cgRectValue
+        }
+        
+        var animationCurve: UInt = 0
+        if let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber {
+            animationCurve = curve.uintValue
+        }
+        
+        let animationOptionCurve = UIViewAnimationOptions(rawValue: animationCurve << 16)
+        let options: UIViewAnimationOptions = [ UIViewAnimationOptions.beginFromCurrentState, animationOptionCurve]
+        
+        let anchor = isShow ? view.bottomAnchor : view.safeAreaLayoutGuide.bottomAnchor
+        let constant = isShow ? -keyboardEndFrame.height : 0
+        view.removeConstraint(footerBottomConstraint)
+        footerBottomConstraint = footer.bottomAnchor.constraint(equalTo: anchor, constant: constant)
+        footerBottomConstraint.isActive = true
+        
+        UIView.animate(withDuration: animationDuration, delay: 0, options: options, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+}
+
+// MARK: - TodoTableDelegate
+extension TodoListViewController: TodoTableDelegate {
+    
+    func didSelect(at index: Int) {
+        // Toggle item completion state
+        var item = todos.items[index]
+        item.isComplete = !item.isComplete
+        item.completionDate = item.isComplete ? Date() : nil
+        todos.items[index] = item
+        todos.save()
+        
+        tableViewController.reload(item: item, at: index)
+    }
+    
+    func didDeleteItem(at index: Int) {
+        todos.items.remove(at: index)
+        todos.save()
+        
+        tableViewController.deleteItem(at: index)
+    }
+    
+    func didMoveRow(sourceIndex: Int, destinationIndex: Int) {
+        let item = todos.items[sourceIndex]
+        todos.items.remove(at: sourceIndex)
+        todos.items.insert(item, at: destinationIndex)
+        todos.save()
+        
+        tableViewController.resetDataSource(with: todos.items)
+    }
 }
 
 // MARK: - TextFieldViewDelegate Extension
@@ -86,9 +151,7 @@ extension TodoListViewController: TextFieldViewDelegate {
     func textField(didEnter text: String) {
         let item = Item(title: text)
         todos.items.append(item)
-        let newIndex = IndexPath(row: todos.items.count-1, section: 0)
-        tableView.beginUpdates()
-        tableView.insertRows(at: [newIndex], with: .automatic)
-        tableView.endUpdates()
+        
+        tableViewController.add(item: item)
     }
 }
