@@ -20,5 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func setAppearance() {
         UINavigationBar.appearance().isTranslucent = false
     }
+
 }
 

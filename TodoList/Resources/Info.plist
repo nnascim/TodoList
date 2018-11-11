@@ -20,19 +20,6 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>UIApplicationShortcutItems</key>
-	<array>
-		<dict>
-			<key>UIApplicationShortcutItemIconType</key>
-			<string>UIApplicationShortcutIconTypeProhibit</string>
-			<key>UIApplicationShortcutItemSubtitle</key>
-			<string>Remove all todos</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>Clear all</string>
-			<key>UIApplicationShortcutItemType</key>
-			<string>io.chuva.TodoList.clear-all</string>
-		</dict>
-	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
