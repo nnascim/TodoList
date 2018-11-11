@@ -4,19 +4,21 @@ protocol TextFieldViewDelegate: class {
     func textField(didEnter text: String)
 }
 
-
-class TextFieldView: UIView {
+final class TextFieldView: UIView {
     
     static let nibView: TextFieldView = buildNib()
     
-    @IBOutlet var textField: UITextField! {
+    @IBOutlet private var textField: UITextField! {
         didSet {
             textField.delegate = self
             textField.font = UIFont.preferredFont(forTextStyle: .callout)
             textField.adjustsFontForContentSizeCategory = true
-            textField.placeholder = NSLocalizedString("+ Add New Item", comment: "")
+            let placeholder = NSAttributedString(string: NSLocalizedString("+ Add New Item", comment: ""),
+                                                 attributes: [.foregroundColor: UIColor.gray,
+                                                              .font: UIFont.preferredFont(forTextStyle: .callout)])
+            textField.attributedPlaceholder = placeholder
             
-            textField.layer.cornerRadius = bounds.height/2
+            textField.layer.cornerRadius = 16
             textField.layer.masksToBounds = true
             textField.layer.borderColor = UIColor.black.cgColor
             textField.layer.borderWidth = 1
@@ -33,11 +35,6 @@ class TextFieldView: UIView {
     
     private func setupUI() {
         backgroundColor = .clear
-        
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        let heightConstraint = textField.heightAnchor.constraint(greaterThanOrEqualToConstant: 64)
-        heightConstraint.priority = .defaultHigh
-        heightConstraint.isActive = true
     }
 }
 
