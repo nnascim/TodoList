@@ -1,5 +1,5 @@
 ## Mission 🧕🏾 👨🏻‍💼 👩🏼‍💼
-This project was created to supplement the [Swift Miami meetup](http://link.com) and give the community - and more importantly, those new to Swift and/or software development - a place to build something together.
+This project was created to supplement the [Swift Miami meetup](https://www.meetup.com/Swift-Miami/) and give the community - and more importantly, those new to Swift and/or software development - a place to build something together.
 
 We welcome and encourage diversity and collaboration from everyone.
 
