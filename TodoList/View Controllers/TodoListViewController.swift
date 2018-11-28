@@ -66,8 +66,8 @@ final class TodoListViewController: UIViewController {
     
     // MARK: - Keyboard
     private func subscribeToKeyboardEvents() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     private func unsubscribeKeyboardEvents() {
@@ -86,22 +86,22 @@ final class TodoListViewController: UIViewController {
         guard let userInfo = notification.userInfo else { return }
         
         var animationDuration: TimeInterval = 0
-        if let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber {
+        if let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber {
             animationDuration = duration.doubleValue
         }
         
         var keyboardEndFrame = CGRect.zero
-        if let frameEnd = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+        if let frameEnd = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             keyboardEndFrame = frameEnd.cgRectValue
         }
         
         var animationCurve: UInt = 0
-        if let curve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber {
+        if let curve = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber {
             animationCurve = curve.uintValue
         }
         
-        let animationOptionCurve = UIViewAnimationOptions(rawValue: animationCurve << 16)
-        let options: UIViewAnimationOptions = [ UIViewAnimationOptions.beginFromCurrentState, animationOptionCurve]
+        let animationOptionCurve = UIView.AnimationOptions(rawValue: animationCurve << 16)
+        let options: UIView.AnimationOptions = [ UIView.AnimationOptions.beginFromCurrentState, animationOptionCurve]
         
         let anchor = isShow ? view.bottomAnchor : view.safeAreaLayoutGuide.bottomAnchor
         let constant = isShow ? -keyboardEndFrame.height : 0

@@ -12,16 +12,16 @@ extension UIViewController {
     
     func add(_ child: UIViewController) {
         child.view.translatesAutoresizingMaskIntoConstraints = false
-        addChildViewController(child)
+        addChild(child)
         view.addSubview(child.view)
-        child.didMove(toParentViewController: self)
+        child.didMove(toParent: self)
     }
     
     func remove() {
         guard parent != nil else { return }
         
-        willMove(toParentViewController: nil)
-        removeFromParentViewController()
+        willMove(toParent: nil)
+        removeFromParent()
         view.removeFromSuperview()
     }
 }
