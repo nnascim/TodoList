@@ -77,7 +77,7 @@ final class ItemTableViewCell: UITableViewCell {
         heightConstraint.isActive = true
     }
     
-    private func titleAttributes(isCompleted: Bool) -> [NSAttributedStringKey: Any] {
+    private func titleAttributes(isCompleted: Bool) -> [NSAttributedString.Key: Any] {
         
         if isCompleted {
             let bodyFont = UIFont.preferredFont(forTextStyle: .body)
@@ -87,8 +87,8 @@ final class ItemTableViewCell: UITableViewCell {
         return [.font: titleLabel.font, .foregroundColor: UIColor.black]
     }
     
-    private func subtitleAttributes(isCompleted: Bool) -> [NSAttributedStringKey: Any] {
-        var attributes: [NSAttributedStringKey: Any]
+    private func subtitleAttributes(isCompleted: Bool) -> [NSAttributedString.Key: Any] {
+        var attributes: [NSAttributedString.Key: Any]
         attributes = isCompleted ? [.foregroundColor: UIColor.lightGray] : [.foregroundColor: UIColor.gray]
         attributes[.font] = subtitleLabel.font
         
