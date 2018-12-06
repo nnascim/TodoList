@@ -10,6 +10,7 @@ extension NSObject {
     ///
     ///
     /// - Returns: String containing the name of the object's class.
+    ///
     var className: String {
         
         return String(describing: type(of: self))
@@ -20,6 +21,7 @@ extension NSObject {
     /// Use className instead of:
     ///
     ///     class.String(describing: type(of: self))
+    ///
     static var className: String {
         return String(describing: self)
     }
