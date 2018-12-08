@@ -2,6 +2,9 @@ import UIKit
 
 extension UIView {
     
+    /// Builds a nib.
+    ///
+    /// - Returns: A nib.
     static func buildNib<T: UIView>() -> T {
         let nibName = String(describing: T.self)
         
@@ -12,8 +15,12 @@ extension UIView {
         
         return nibView
     }
-    
-    /// Adds a subview and constrains it to the edges
+   
+    /// Adds a subview and constrains it to the edges.
+    ///
+    /// This function also sets sets false to
+    ///
+    ///     translatesAutoresizingMaskIntoConstraints
     ///
     /// - Parameter subview: view to add as subview and constraint.
     /// - Parameter margin: Optional margin inset to all of the edges of the subview. Defaults to 0.
