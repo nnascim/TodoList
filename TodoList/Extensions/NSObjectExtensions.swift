@@ -1,7 +1,7 @@
 import Foundation
 
 extension NSObject {
-    
+        
     /// Convenience variable for obtaining the name of an object's class.
     ///
     /// Use className instead of:
