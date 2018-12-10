@@ -12,7 +12,7 @@ extension UIViewController {
     
     /// Adds the specified view controller as a child of the current view controller.
     ///
-    /// This function runs the following code:
+    /// This convenience function runs the following code:
     ///
     ///     child.translatesAutoresizingMaskIntoConstraints = false
     ///     addChildViewController(child)
@@ -29,7 +29,7 @@ extension UIViewController {
     
     /// Removes the view controller from its parent.
     ///
-    /// This function runs the following code:
+    /// This convenience function runs the following code:
     ///
     ///     willMove(toParentViewController: nil)
     ///     removeFromParentViewController()
