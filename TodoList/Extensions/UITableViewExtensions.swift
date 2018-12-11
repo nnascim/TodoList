@@ -8,7 +8,7 @@ extension UITableView {
     ///
     ///     - cellType: Name of xib to register
     func register<T: UITableViewCell>(cellType: T.Type) {
-        let reuseIdentifier = String(describing: T.self)
+        let reuseIdentifier = T.className
         let nib = UINib(nibName: reuseIdentifier, bundle: Bundle(for: T.self))
         
         register(nib, forCellReuseIdentifier: reuseIdentifier)
@@ -21,7 +21,7 @@ extension UITableView {
     ///
     /// - Returns: A UITableViewCell object with the associated reuse identifier. This method always returns a valid cell.
     func dequeueReusableCell<T: UITableViewCell>(for indexPath: IndexPath) -> T {
-        let reuseIdentifier = String(describing: T.self)
+        let reuseIdentifier = T.className
         
         guard let cell = dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? T else {
             assertionFailure("Unable to dequeue a cell for \(reuseIdentifier)")

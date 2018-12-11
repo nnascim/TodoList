@@ -6,7 +6,7 @@ extension UIView {
     ///
     /// - Returns: A nib.
     static func buildNib<T: UIView>() -> T {
-        let nibName = String(describing: T.self)
+        let nibName = self.className
         
         guard let nibView = Bundle(for: T.self).loadNibNamed(nibName, owner: self)?.first as? T else {
             assertionFailure("Unable to load a nibView for \(nibName)")
