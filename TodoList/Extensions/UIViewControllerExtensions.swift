@@ -6,6 +6,7 @@ extension UIViewController {
     ///
     /// - Parameter subview: view to add as subview and constraint.
     /// - Parameter margin: Optional margin inset to all of the edges of the subview. Defaults to 0.
+    ///
     func addSubViewWithFillConstraints(_ subview: UIView, margin: CGFloat = 0) {
         view.addSubViewWithFillConstraints(subview, margin: margin)
     }
@@ -20,6 +21,7 @@ extension UIViewController {
     ///     child.didMove(toParentViewController: self)
     ///
     /// - Parameter child: The view controller to be added as a child.
+    ///
     func add(_ child: UIViewController) {
         child.view.translatesAutoresizingMaskIntoConstraints = false
         addChild(child)
