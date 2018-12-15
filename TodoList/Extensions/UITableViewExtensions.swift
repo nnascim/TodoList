@@ -12,7 +12,7 @@ extension UITableView {
         register(nib, forCellReuseIdentifier: reuseIdentifier)
     }
     
-    /// Returns a reusable table-view cell object and adds it to the table. Use this function to avoid creating a reuseIdentifier.
+    /// Returns a reusable UITableViewCell object and adds it to the table. Use this function to avoid creating a reuseIdentifier.
     ///
     /// - Parameter indexPath: The index path specifying the location of the cell. The data source receives this information when
     ///     it is asked for the cell and should just pass it along. This method uses the index path to
