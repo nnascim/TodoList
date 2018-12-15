@@ -4,9 +4,7 @@ extension NSObject {
     
     /// Convenience variable for obtaining the name of an object's class.
     ///
-    /// Use className instead of:
-    ///
-    ///     object.String(describing: type(of: self))
+    /// Use className instead of ```String(describing: type(of: self))```
     var className: String {
         
         return String(describing: type(of: self))
@@ -14,9 +12,7 @@ extension NSObject {
     
     /// Static class variable for obtaining a class' name.
     ///
-    /// Use className instead of:
-    ///
-    ///     class.String(describing: type(of: self))
+    /// Use className instead of ```String(describing: type(of: self))```
     static var className: String {
         return String(describing: self)
     }
