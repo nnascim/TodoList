@@ -127,5 +127,56 @@ final class TodoTableViewController: UITableViewController {
         delegate?.didSelect(at: indexPath.row)
     }
     
+    // MARK: - JCS Edit
+    
+    // Gio - I want to add the ability to display custom actions when the user swipes a table row,
+    // specifically the ability to edit.  The example code below is from
+    // https://useyourloaf.com/blog/table-swipe-actions/ where they give the ability to
+    // 'favorite' an item.  We'll change this to Edit, but just for starters, do I even have this code in the right place?  And if so, it seems we need to replace dataSource? with something else, but I can't figure out what that it.  Thoughts?
+    
+//    override func tableView(_ tableView: UITableView,
+//                   leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
+//        ->   UISwipeActionsConfiguration? {
+//
+//            // Get current state from data source
+//            guard let editable = dataSource?.editable(at: indexPath) else {
+//                return nil
+//            }
+//
+//            let title = editable ?
+//                NSLocalizedString("Editable", comment: "Editable") :
+//                NSLocalizedString("notEditable", comment: "notEditable")
+//
+//            let action = UIContextualAction(style: .normal, title: title,
+//                                            handler: { (action, view, completionHandler) in
+//                                                // Update data source when user taps action
+//                                                self.dataSource?.setEditable(!editable, at: indexPath)
+//                                                completionHandler(true)
+//            })
+//
+//            //action.image = UIImage(named: "heart")
+//            action.backgroundColor = editable ? .red : .green
+//            let configuration = UISwipeActionsConfiguration(actions: [action])
+//            return configuration
+//    }
+    
+    override func tableView(_ tableView: UITableView,
+                            editActionsForRowAt indexPath: IndexPath)
+        -> [UITableViewRowAction]? {
+            
+            let deleteTitle = NSLocalizedString("Delete", comment: "Delete action")
+            let deleteAction = UITableViewRowAction(style: .destructive,
+                                                    title: deleteTitle) { (action, indexPath) in
+                                                        self.dataSource?.delete(at: indexPath)
+            }
+            
+            let editTitle = NSLocalizedString("Edit", comment: "Edit action")
+            let editAction = UITableViewRowAction(style: .normal,
+                                                      title: editTitle) { (action, indexPath) in
+                                                        self.dataSource?.setEdit(true, at: indexPath)
+            }
+            editAction.backgroundColor = .green
+            return [editAction, deleteAction]
+    }
     
 }
