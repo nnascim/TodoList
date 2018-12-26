@@ -172,7 +172,7 @@ extension TodoTableViewController {
             let deleteTitle = NSLocalizedString("Delete", comment: "Delete action")
             let deleteAction = UITableViewRowAction(style: .destructive,
                                                     title: deleteTitle) { (action, indexPath) in
-                                                        self.dataSource.delete(at: indexPath)
+                                                        self.delete(indexPath)
             }
             
             let editTitle = NSLocalizedString("Edit", comment: "Edit action")
@@ -184,7 +184,7 @@ extension TodoTableViewController {
             return [editAction, deleteAction]
     }
     
-    func delete(at: IndexPath) {
-        delegate?.didDeleteItem(at: IndexPath)
+    func setEdit(_ :Bool, _ :Int) {
+        
     }
 }
