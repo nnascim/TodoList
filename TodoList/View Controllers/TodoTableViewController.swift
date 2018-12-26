@@ -183,4 +183,8 @@ extension TodoTableViewController {
             editAction.backgroundColor = .green
             return [editAction, deleteAction]
     }
+    
+    func delete(at: IndexPath) {
+        delegate?.didDeleteItem(at: IndexPath)
+    }
 }
